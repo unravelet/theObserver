@@ -1,0 +1,1 @@
+Raspberry Pi 4 POE HAT Case by Akos by azambori on Thingiverse: https://www.thingiverse.com/thing:4348873

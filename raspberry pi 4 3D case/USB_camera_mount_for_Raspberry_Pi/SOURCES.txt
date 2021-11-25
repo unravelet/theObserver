@@ -1,0 +1,4 @@
+Sources for USB camera mount for Raspberry Pi
+
+Anet A8 Rpi camera Bed mount (https://www.thingiverse.com/thing:1867549)
+USB Cover (https://www.thingiverse.com/thing:2672365)
