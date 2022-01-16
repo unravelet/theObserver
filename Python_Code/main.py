@@ -1,28 +1,29 @@
 import cv2
 import imutils
-from imutils.video import VideoStream
-from imutils.video import FPS
-from threading import Thread
-import time
-from datetime import datetime, time
-import numpy as np
-#import mediapipe as mp
-import argparse
+# from imutils.video import VideoStream
+# from imutils.video import FPS
+# from threading import Thread
+# import time
+# from datetime import datetime, time
+# import numpy as np
+# import mediapipe as mp
+# import argparse
 
 #######################################################################################
 
 
-##Initializing the HOG person
-##detector
+##Initializing the HOG person detection
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
+##
 cap = cv2.VideoCapture('../res/videos/video2.mp4')
 if not cap.isOpened():
   print("Error. Source file not found.")
 else:
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     print("fps of current video file: ", fps)
+##
 
 while cap.isOpened():
     # Reading the video stream
