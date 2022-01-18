@@ -8,6 +8,10 @@ import imutils
 # import numpy as np
 # import mediapipe as mp
 # import argparse
+import time
+import paho.mqtt.client as paho
+from paho import mqtt
+
 
 #######################################################################################
 
@@ -24,6 +28,11 @@ else:
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     print("fps of current video file: ", fps)
 ##
+
+client = paho.Client(client_id="", userdata=None, protocol=paho.MQTTv5)
+client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+client.username_pw_set("theObserver", "Zuckerwatte3")
+client.connect("4ac0ff29055441c8bbfa3caf55826e16.s1.eu.hivemq.cloud", 8883)
 
 while cap.isOpened():
     # Reading the video stream
@@ -46,6 +55,8 @@ while cap.isOpened():
             person += 1
 
         # Showing the output Image
+        client.publish("theObserver/Counter", f"{person - 1}", qos=1)
+        client.loop()
         cv2.putText(image, f'person {person - 1}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
         cv2.imshow("Image", image)
         if cv2.waitKey(1) & 0xFF == ord('q') or not ret:
