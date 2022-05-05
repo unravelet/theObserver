@@ -8,10 +8,17 @@ import imutils
 # import numpy as np
 # import mediapipe as mp
 # import argparse
-import time, ssl, uuid
-import paho.mqtt.client as paho
+import yaml
+
+from mqtt import Mqtt
 
 #######################################################################################
+
+
+
+with open('config.yaml') as f:
+    config = yaml.load(f, Loader=yaml.FullLoader)
+    client = Mqtt(config["mqtt_broker"], config["mqtt_port"], config["mqtt_topic"])
 
 
 ##Initializing the HOG person detection
@@ -26,11 +33,6 @@ else:
     fps = int(cap.get(cv2.CAP_PROP_FPS))
     print("fps of current video file: ", fps)
 ##
-
-client = paho.Client(client_id="theObserver_" + str(uuid.uuid4()), userdata=None, protocol=paho.MQTTv5)
-client.tls_set(cert_reqs = ssl.CERT_NONE)
-client.tls_insecure_set(True)
-client.connect("opendata.technikum-wien.at", 8883, 60)
 
 while cap.isOpened():
     # Reading the video stream
@@ -52,9 +54,10 @@ while cap.isOpened():
             cv2.putText(image, f'person {person}', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
             person += 1
 
+        # Send counter to mqtt broker
+        client.send(str(person - 1))
+
         # Showing the output Image
-        client.publish("theObserver/Counter", f"{person - 1}", qos=1)
-        client.loop()
         cv2.putText(image, f'person {person - 1}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
         cv2.imshow("Image", image)
         if cv2.waitKey(1) & 0xFF == ord('q') or not ret:
