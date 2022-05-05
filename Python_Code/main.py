@@ -8,10 +8,8 @@ import imutils
 # import numpy as np
 # import mediapipe as mp
 # import argparse
-import time
+import time, ssl, uuid
 import paho.mqtt.client as paho
-from paho import mqtt
-
 
 #######################################################################################
 
@@ -29,10 +27,10 @@ else:
     print("fps of current video file: ", fps)
 ##
 
-client = paho.Client(client_id="", userdata=None, protocol=paho.MQTTv5)
-client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
-client.username_pw_set("theObserver", "Zuckerwatte3")
-client.connect("4ac0ff29055441c8bbfa3caf55826e16.s1.eu.hivemq.cloud", 8883)
+client = paho.Client(client_id="theObserver_" + str(uuid.uuid4()), userdata=None, protocol=paho.MQTTv5)
+client.tls_set(cert_reqs = ssl.CERT_NONE)
+client.tls_insecure_set(True)
+client.connect("opendata.technikum-wien.at", 8883, 60)
 
 while cap.isOpened():
     # Reading the video stream
@@ -66,6 +64,8 @@ while cap.isOpened():
 
 cap.release()
 cv2.destroyAllWindows()
+client.loop_stop()
+client.disconnect()
 
 
 #######################################################################################
