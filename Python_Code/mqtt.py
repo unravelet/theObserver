@@ -23,6 +23,10 @@ class Mqtt:
         self.client.publish(self.topic, text, qos=1)
         self.client.loop()
 
+    def disconnect(self):
+        self.client.loop_stop()
+        self.client.disconnect() 
+
 
 if __name__ == "__main__":
     with open('config.yaml') as f:

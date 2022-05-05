@@ -67,7 +67,6 @@ while cap.isOpened():
 
 cap.release()
 cv2.destroyAllWindows()
-client.loop_stop()
 client.disconnect()
 
 
