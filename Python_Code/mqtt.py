@@ -5,6 +5,8 @@ import paho.mqtt.client as paho
 
 
 class Mqtt:
+    lastSend = ""
+
     def __init__(self, broker, port, topic):
         self.id = topic + "-" + str(uuid.uuid4())
         self.broker = broker
@@ -20,8 +22,10 @@ class Mqtt:
         print("Connected!")
 
     def send(self, text):
-        self.client.publish(self.topic, text, qos=1)
-        self.client.loop()
+        if self.lastSend != text:
+            self.lastSend = text
+            self.client.publish(self.topic, text, qos=1)
+            self.client.loop()
 
     def disconnect(self):
         self.client.loop_stop()

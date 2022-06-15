@@ -1,0 +1,14 @@
+body {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+
+.stream {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    background-color: black;
+    text-align: center;
+}
