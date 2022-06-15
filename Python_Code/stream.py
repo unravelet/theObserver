@@ -5,8 +5,11 @@ import cv2
 
 # https://towardsdatascience.com/video-streaming-in-web-browsers-with-opencv-flask-93a38846fe00
 # initialize a flask object
+from main import test
+
 app = Flask(__name__)
 
+# camera = cv2.VideoCapture('../res/videos/video2.mp4')
 camera = cv2.VideoCapture(0)
 
 
@@ -19,7 +22,7 @@ def hello():
 def video_feed():
     # return the response generated along with the specific media
     # type (mime type)
-    return Response(gen_frames(),
+    return Response(test(camera),
                     mimetype="multipart/x-mixed-replace; boundary=frame")
 
 

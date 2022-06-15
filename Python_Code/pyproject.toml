@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "python_code"
+version = "0.1.0"
+description = ""
+authors = ["misternic <50358374+misternic@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Flask = "^2.1.2"
+paho-mqtt = "^1.6.1"
+opencv-python = "^4.6.0"
+imutils = "^0.5.4"
+PyYAML = "^6.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -15,60 +15,83 @@ from mqtt import Mqtt
 #######################################################################################
 
 
-
 with open('config.yaml') as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
     client = Mqtt(config["mqtt_broker"], config["mqtt_port"], config["mqtt_topic"])
-
 
 ##Initializing the HOG person detection
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
-##
+
 cap = cv2.VideoCapture('../res/videos/video2.mp4')
-if not cap.isOpened():
-  print("Error. Source file not found.")
-else:
-    fps = int(cap.get(cv2.CAP_PROP_FPS))
-    print("fps of current video file: ", fps)
-##
 
-while cap.isOpened():
-    # Reading the video stream
-    ret, image = cap.read()
-    if ret:
-        image = imutils.resize(image,
-                               width=min(400, image.shape[1]))
+def test(cap):
+    while True:
+        ret, image = cap.read()
+        if ret:
+            image = imutils.resize(image,
+                                   width=min(400, image.shape[1]))
 
-        # Detecting all the regions
-        # in the Image that has a
-        # pedestrians inside it
-        (regions, _) = hog.detectMultiScale(image, winStride=(4, 4), padding=(4, 4), scale=1.05)
+            # Detecting all the regions
+            # in the Image that has a
+            # pedestrians inside it
+            (regions, _) = hog.detectMultiScale(image, winStride=(4, 4), padding=(4, 4), scale=1.05)
 
-        # Drawing the regions in the
-        # Image
-        person = 1
-        for (x, y, w, h) in regions:
-            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
-            cv2.putText(image, f'person {person}', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
-            person += 1
+            # Drawing the regions in the
+            # Image
+            person = 1
+            for (x, y, w, h) in regions:
+                cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                cv2.putText(image, f'person {person}', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+                person += 1
 
-        # Send counter to mqtt broker
-        client.send(str(person - 1))
+            # Send counter to mqtt broker
+            client.send(str(person - 1))
 
-        # Showing the output Image
-        cv2.putText(image, f'person {person - 1}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
-        cv2.imshow("Image", image)
-        if cv2.waitKey(1) & 0xFF == ord('q') or not ret:
+            # Showing the output Image
+            cv2.putText(image, f'person {person - 1}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
+
+            ret, buffer = cv2.imencode('.jpg', image)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+
+if __name__ == "__main__":
+    while cap.isOpened():
+        # Reading the video stream
+        ret, image = cap.read()
+        if ret:
+            image = imutils.resize(image,
+                                   width=min(400, image.shape[1]))
+
+            # Detecting all the regions
+            # in the Image that has a
+            # pedestrians inside it
+            (regions, _) = hog.detectMultiScale(image, winStride=(4, 4), padding=(4, 4), scale=1.05)
+
+            # Drawing the regions in the
+            # Image
+            person = 1
+            for (x, y, w, h) in regions:
+                cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                cv2.putText(image, f'person {person}', (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+                person += 1
+
+            # Send counter to mqtt broker
+            client.send(str(person - 1))
+
+            # Showing the output Image
+            cv2.putText(image, f'person {person - 1}', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
+            cv2.imshow("Image", image)
+            if cv2.waitKey(1) & 0xFF == ord('q') or not ret:
+                break
+        else:
             break
-    else:
-        break
 
-cap.release()
-cv2.destroyAllWindows()
-client.disconnect()
-
+    cap.release()
+    cv2.destroyAllWindows()
+    client.disconnect()
 
 #######################################################################################
 ## Example code from: https://nrsyed.com/2018/07/05/multithreading-with-opencv-python-to-improve-video-processing-performance/
@@ -217,5 +240,3 @@ client.disconnect()
 #
 #
 # threadBoth('../res/videos/video2.mp4')
-
-
