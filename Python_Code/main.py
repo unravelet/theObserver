@@ -35,7 +35,7 @@ video_stream.release()
 #calculate median and average frames for frames array
 medianFrame = np.median(frames, axis=0).astype(dtype=np.uint8)
 plt.imshow(fixColor(medianFrame))
-#plt.show()
+plt.show()
 
 #Processing a frame
 sample_frame = frames[25]
