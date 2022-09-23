@@ -1,0 +1,116 @@
+Works with Debian Buster Desktop (without additional applications)
+
+After installing Debian Buster Desktop some "locale" Stuff might be missing and Debian waits for input
+type:
+
+locale-gen en_US.UTF-8
+
+Afterwards it should continue booting and shortly after displaying the desktop Debian asks for some settings like location, timezone etc.
+
+On Desktop:
+Open LXTerminal:
+
+sudo apt install chromium-browser
+sudo apt update
+sudo apt upgrade
+
+*********************************************
+*********************************************
+
+Now the important part starts:
+
+sudo apt install unclutter (um den Cursor nach ein paar Sekunden zu verbergen)
+
+Find the autostart-file. In Debian Buster it should be in the following directory:
+/etc/xdg/lxsession/LXDE-pi/autostart
+
+open with
+sudo nano autostart
+
+--------------------------
+@lxpanel --profile LXDE-pi
+@pcmanfm --desktop --profile LXDE-pi
+
+# hide cursor
+@unclutter
+
+# deactivate screensaver
+#@xscreensaver -no-splash
+@point-rpi
+
+@xset s off
+@xset -dpms
+@xset s noblank
+
+# to prevent error messages on the screen (maybe because of accidental power-loss)
+sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' /home/pi/.config/chromium/Default/Preferences
+sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' /home/pi/.config/chromium/Default/Preferences
+
+@chromium-browser --noerrdialogs --disable-infobars -- incognito --kiosk https://URL4Tab1 https://URL4Tab2 https://URL4Tab3
+
+--------------------------
+Ctrl+O to write & Ctrl+X to close
+
+
+Change to directory
+/home/pi/
+
+Create sh-file by typing:
+sudo nano myservicelogic.sh ("myservicelogic" ist nur der Dateiname - da können Sie gerne einen eigenen verwenden)
+
+This file contains the commands which shall be executed as a service
+
+--------------------------
+#!/bin/bash
+
+<service-logic goes here>
+--------------------------
+Ctrl+O to write & Ctrl+X to close
+
+
+Configure Service to execute your service-logic in your .sh-file:
+
+Zuerst ID des angeschlossenen Displays auslesen:
+echo $DISPLAY
+sollte dann :0.0 zurückgeben. Dieser muss dann in einem neuen Service angegeben werden:
+
+Neues Service-File anlegen:
+Im directory /lib/systemd/system/
+muss ein neues File angelegt werden: sudo nano myservicelogic.service
+
+--------------------------
+[Unit]
+Description=Chromium Kiosk
+Wants=graphical.target
+After=graphical.target
+
+[Service]
+Environment=DISPLAY=:0.0
+Environment=XAUTHORITY=/home/pi/.Xauthority
+Type=simple
+ExecStart=/bin/bash /home/pi/myservicelogic.sh
+Restart=on-abort
+User=pi
+Group=pi
+
+[Install]
+WantedBy=graphical.target
+
+--------------------------
+Ctrl+O to write & Ctrl+X to close
+
+Service einschalten und starten:
+sudo systemctl enable myservicelogic.service
+sudo systemctl start myservicelogic.service
+
+Prüfen, ob Service läuft:
+sudo systemctl status myservicelogic.service
+
+
+*********************************************
+*********************************************
+
+References:
+https://pimylifeup.com/raspberry-pi-kiosk/
+https://itrig.de/index.php?/archives/2309-Raspberry-Pi-3-Kiosk-Chromium-Autostart-im-Vollbildmodus-einrichten.html
+https://www.danpurdy.co.uk/web-development/raspberry-pi-kiosk-screen-tutorial/
