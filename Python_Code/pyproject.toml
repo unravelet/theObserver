@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "python_code"
+name = "theObserver"
 version = "0.1.0"
 description = ""
 authors = ["misternic <50358374+misternic@users.noreply.github.com>"]
@@ -14,6 +14,32 @@ PyYAML = "^6.0"
 
 [tool.poetry.dev-dependencies]
 
+
+[tool.pdm]
+[tool.pdm.dev-dependencies]
+dev = []
+
+[tool.pdm.build]
+includes = []
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[project]
+authors = [
+    {name = "misternic", email = "50358374+misternic@users.noreply.github.com"},
+]
+requires-python = ">=3.9,<4.0"
+dependencies = [
+    "Flask<3.0.0,>=2.1.2",
+    "paho-mqtt<2.0.0,>=1.6.1",
+    "opencv-python<5.0.0,>=4.6.0",
+    "imutils<1.0.0,>=0.5.4",
+    "PyYAML<7.0,>=6.0",
+    "Pillow>=9.2.0",
+]
+name = "theObserver"
+version = "0.1.0"
+description = ""
+
+[project.urls]
