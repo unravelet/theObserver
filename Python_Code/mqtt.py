@@ -30,6 +30,7 @@ class Mqtt:
     def disconnect(self):
         self.client.loop_stop()
         self.client.disconnect() 
+        print("Disconnected!")
 
 
 if __name__ == "__main__":
