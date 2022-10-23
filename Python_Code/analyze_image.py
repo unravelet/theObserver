@@ -21,6 +21,28 @@ def detector(image):
    result = non_max_suppression(rects, probs=None, overlapThresh=0.7)
    return result
 
+def camera():
+    camera = cv2.VideoCapture(0)
+
+    while(True):
+        ret, image = camera.read()
+
+        start_time = time.time()
+        result = detector(image.copy())
+        print("--- %s seconds ---" % (time.time() - start_time))
+
+        #for (xA, yA, xB, yB) in result: 
+        #    cv2.rectangle(image, (xA, yA), (xB, yB), (0, 255, 0), 2)
+        #plt.imshow(image) # stream bild mit rechtecke
+        #plt.show()
+
+        result1 = len(result) # anzahl der besucher
+        print (result1)
+
+camera()
+
+exit
+
 img = cv2.imread("people.png")
 
 #camera = cv2.VideoCapture(0)
@@ -39,8 +61,8 @@ print("--- %s seconds ---" % (time.time() - start_time))
 
 result1 = len(result)
 print (result1)
-for (xA, yA, xB, yB) in result:
-    cv2.rectangle(img, (xA, yA), (xB, yB), (0, 255, 0), 2)
-plt.imshow(img)
-plt.show()
+#for (xA, yA, xB, yB) in result:
+#    cv2.rectangle(img, (xA, yA), (xB, yB), (0, 255, 0), 2)
+#plt.imshow(img)
+#plt.show()
 
