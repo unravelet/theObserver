@@ -12,6 +12,7 @@ dependencies = [
     "pyyaml",
     "requests",
     "flask>=2.2.2",
+    "matplotlib>=3.6.1",
 ]
 requires-python = ">=3.8"
 license = {text = "MIT"}
