@@ -1,7 +1,11 @@
-from log import logger
-from mqtt import Mqtt
+from Logger import Logger
+from MqttSender import MqttSender
 
-client = Mqtt.loadConfigFromYamlFile('config.yaml')
+logger = Logger("Main")
+logger.info("Start theObserver...")
 
-if __name__ == "__main__":
-    client.send("Test")
+mqttSender = MqttSender.loadConfigFromYamlFile('config.yaml')
+
+######
+
+mqttSender.send("Test")

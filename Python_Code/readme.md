@@ -1,5 +1,7 @@
 ```mermaid
 classDiagram
-	class Mqtt
+	class MqttSender
 	class Logger
+	class Recognizer
+	class HttpStreamer
 ```
