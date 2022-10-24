@@ -20,6 +20,11 @@ def hogDetector(image):
    result = non_max_suppression(rects, probs=None, overlapThresh=0.7)
    return result
 
+def getImage(result, image):
+    for (xA, yA, xB, yB) in result: 
+        cv2.rectangle(image, (xA, yA), (xB, yB), (0, 255, 0), 2)
+    return image
+
 if __name__ == "__main__":
     camera = cv2.VideoCapture(0)
 
@@ -29,11 +34,6 @@ if __name__ == "__main__":
         start_time = time.time()
         result = hogDetector(image.copy())
         print("--- %s seconds ---" % (time.time() - start_time))
-
-        #for (xA, yA, xB, yB) in result: 
-        #    cv2.rectangle(image, (xA, yA), (xB, yB), (0, 255, 0), 2)
-        #plt.imshow(image) # stream bild mit rechtecke
-        #plt.show()
 
         result1 = len(result) # anzahl der besucher
         print (result1)
