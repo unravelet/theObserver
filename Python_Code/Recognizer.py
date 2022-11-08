@@ -4,8 +4,6 @@ from imutils.object_detection import non_max_suppression
 import numpy as np
 import time
 import base64
-from PIL import Image
-from matplotlib import pyplot as plt
 
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
@@ -26,15 +24,21 @@ def getImage(result, image):
     return image
 
 if __name__ == "__main__":
-    camera = cv2.VideoCapture(0)
+    image = cv2.imread("people.png")
+    result = hogDetector(image.copy())
+    result1 = len(result) # anzahl der besucher
+    print (result1)
 
-    while(True):
-        ret, image = camera.read()
 
-        start_time = time.time()
-        result = hogDetector(image.copy())
-        print("--- %s seconds ---" % (time.time() - start_time))
+#    camera = cv2.VideoCapture(0)
 
-        result1 = len(result) # anzahl der besucher
-        print (result1)
+#    while(True):
+#        ret, image = camera.read()
+#    
+#        start_time = time.time()
+#        result = hogDetector(image.copy())
+#        print("--- %s seconds ---" % (time.time() - start_time))
+#
+#        result1 = len(result) # anzahl der besucher
+#        print (result1)
         
