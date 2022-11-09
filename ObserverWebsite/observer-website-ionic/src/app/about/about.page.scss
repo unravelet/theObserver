@@ -1,0 +1,37 @@
+#about-blocks{
+    overflow: hidden;
+    margin: auto;
+    width: 90%;
+    margin-top: 100px;
+    text-align: center;
+}
+
+#about-block1{
+    border: 1px solid rgb(180, 180, 180);
+    border-radius: 3px;
+    margin-top: 50px;
+    margin-left: 50px;
+    width: 25%;
+    padding: 10px;
+    float: left;
+}
+
+#about-block2{
+    border: 1px solid rgb(180, 180, 180);
+    border-radius: 3px;
+    margin-top: 100px;
+    margin-left: 50px;
+    width: 25%;
+    padding: 10px;
+    display: inline-block;
+}
+
+#about-block3{
+    border: 1px solid rgb(180, 180, 180);
+    border-radius: 3px;
+    margin-top: 150px;
+    margin-left: 50px;
+    width: 25%;
+    padding: 10px;
+    float: right;
+}
