@@ -4,24 +4,51 @@ import time
 
 from Logger import Logger
 from MqttSender import MqttSender
-from Recognizer import hogDetector
+import Recognizer
 
-lastResult = 0
+from flask import Response
+from flask import Flask
+
+results = []
 
 def start_http_server():
-    lastlastResult = 0
+    app = Flask(__name__)
+
+    @app.route('/')
+    def hello():
+        return 'Hello, World!'
+
+    @app.route("/video_feed")
+    def video_feed():
+        # return the response generated along with the specific media
+        # type (mime type)
+        return Response(gen_frames(),
+                        mimetype="multipart/x-mixed-replace; boundary=frame")
+
+    def gen_frames():
+        while True:
+            if (len(results) > 0):
+                frame = Recognizer.getImage(results[-1][0], results[-1][1])
+                ret, buffer = cv2.imencode('.jpg', frame)
+                frame = buffer.tobytes()
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                time.sleep(1)
+
+    app.run(debug=True, use_reloader=False)
+    return
     while (True): 
-        if (lastlastResult != lastResult):
-            print(lastResult)
-            lastlastResult = lastResult
+        if (len(results) > 0):
+            print(len(results[-1][1]))
+        time.sleep(0.5)
 
 def start_recognizer():
     camera = cv2.VideoCapture(0)
 
     while(True):
         ret, image = camera.read()
-        result = hogDetector(image.copy())
-        lastResult = len(result)
+        result = Recognizer.hogDetector(image.copy())
+        results.append([result, image])
         mqttSender.send(len(result))
         #result1 = len(result) # anzahl der besucher
         #print (result1)
@@ -40,6 +67,6 @@ logger.info("before running thread")
 thread_http_server.start()
 thread_recognizer.start()
 logger.info("wait for the thread to finish")
-thread_http_server.join()
-thread_recognizer.join()
-logger.info("all done")
+
+while True:
+    time.sleep(1)
