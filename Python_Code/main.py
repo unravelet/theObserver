@@ -22,7 +22,7 @@ def get_last_frame():
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-            time.sleep(1)
+            time.sleep(0.3)
 
 def start_http_server():
     app = HttpStreamer(get_last_frame)
