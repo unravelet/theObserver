@@ -10,11 +10,13 @@ import Recognizer
 from flask import Response
 from flask import Flask
 
-last_frame = []
+last_frame = None
 
 def get_last_frame():
+    global last_frame
+
     while True:
-        if (last_frame != []):
+        if (last_frame is not None):
             frame = Recognizer.getImage(last_frame[0], last_frame[1])
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
@@ -27,12 +29,14 @@ def start_http_server():
     app.run()
 
 def start_recognizer():
+    global last_frame
+
     camera = cv2.VideoCapture(0)
 
     while(True):
         ret, image = camera.read()
         result = Recognizer.hogDetector(image.copy())
-        lastframe = [result, image]
+        last_frame = [result, image]
         mqttSender.send(len(result))
 
 logger = Logger("Main")
