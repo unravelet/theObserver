@@ -18,15 +18,27 @@ class MqttSender:
         self.client.tls_set(cert_reqs=ssl.CERT_NONE)
         self.client.tls_insecure_set(True)
 
-        self.logger.info(f"connect to {self.broker}:{self.port}")
-        self.client.connect(self.broker, self.port, 60)
-        self.logger.info(f"connected to {self.broker}:{self.port}")
+        self.client.on_connect = self.on_connect
+        self.client.on_disconnect = self.on_disconnect
+
+        self.connect()
 
     @classmethod
     def loadConfigFromYamlFile(cls, file: str):
         with open('config.yaml') as f:
             config = yaml.load(f, Loader=yaml.FullLoader)
             return cls(config["mqtt_broker"], config["mqtt_port"], config["mqtt_topic"])
+
+    def connect(self):
+        self.logger.info(f"connect to {self.broker}:{self.port}")
+        self.client.connect(self.broker, self.port, 60)
+
+    def on_connect(self, client, userdata, flags, rc, a):
+        self.logger.info(f"connected to {self.broker}:{self.port}")
+
+    def on_disconnect(self, client, userdata, flags, rc, a):
+        self.logger.info(f"disconnected from {self.broker}:{self.port}")
+        self.connect()
 
     def send(self, text: str):
         if self.lastSend != text:
