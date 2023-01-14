@@ -10,10 +10,10 @@ export class EventMqttService {
   constructor(
     private _mqttService: MqttService,
   ) {
-    this.endpoint = 'events';
+    this.endpoint = 'theObserver/Counter';
   }
 
-  /*topic(deviceId: string): Observable<IMqttMessage> {
+ /* topic(deviceId: string): Observable<IMqttMessage> {
     let topicName = /${this.endpoint}/${deviceId};
     return this._mqttService.observe(topicName);
   }*/
