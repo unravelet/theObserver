@@ -52,6 +52,14 @@ class MqttSender:
         self.client.disconnect()
         self.logger.info(f"disconnected from {self.broker}:{self.port}")
 
+
+    def subscribe(self):
+        def on_message(client, userdata, msg):
+            print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+
+        self.client.subscribe("theObserver", qos=1)
+        self.client.on_message = on_message
+
 if __name__ == "__main__":
     client = MqttSender.loadConfigFromYamlFile('config.yaml')
     client.send("Hello World!")

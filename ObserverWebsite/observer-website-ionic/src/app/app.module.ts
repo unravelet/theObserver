@@ -16,7 +16,7 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: env.mqtt.server,
   port: env.mqtt.port,
   protocol: (env.mqtt.protocol === "wss") ? "wss" : "ws",
-  path: 'theObserver/Counter',
+  path: '',
 };
 
 @NgModule({

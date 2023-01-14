@@ -9,9 +9,9 @@ export const environment = {
     apiUrl: "",
   },
   mqtt: {
-    server: "4ac0ff29055441c8bbfa3caf55826e16.s1.eu.hivemq.cloud",
+    server: "opendata.technikum-wien.at",
     protocol: "wss",
-    port: 8884
+    port: 8883
   }
 };
 

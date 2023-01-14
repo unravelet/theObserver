@@ -29,6 +29,7 @@ def start_http_server():
     app.run()
 
 def start_recognizer():
+    mqttSender.subscribe()
     global last_frame
 
     camera = cv2.VideoCapture(0)

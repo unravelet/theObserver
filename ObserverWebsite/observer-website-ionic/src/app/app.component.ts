@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import * as mqtt from 'mqtt';
+import { MqttService } from 'ngx-mqtt';
 
 @Component({
   selector: 'app-root',
@@ -7,18 +8,21 @@ import * as mqtt from 'mqtt';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {
-
+  constructor(private mqttService: MqttService) {
+    
+    this.mqttService.observe("theObserver").subscribe(s => {
+      console.log(s);
+    })
     // Connect to the MQTT broker
-    const client = mqtt.connect('wss://opendata.technikum-wien.at:8883/mqtt');
+    /*const client = mqtt.connect('ws://opendata.technikum-wien.at:8883');
 
     // Subscribe to a topic
-    client.subscribe('theObserver/Counter');
+    client.subscribe('theObserver');
 
     // Handle incoming messages
     client.on('message', (topic, message) => {
       console.log(`Received message on topic ${topic}: ${message}`);
-    });
+    });*/
   }
 }
 
