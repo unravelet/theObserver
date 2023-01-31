@@ -1,0 +1,39 @@
+body {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+
+.tabs {
+    display: flex;
+    flex: 1;
+}
+
+.home {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    background-color: black;
+    text-align: center;
+}
+
+.statistics {
+    display: none;
+}
+
+.settings {
+    display: none;
+}
+
+.navigation {
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+}
+
+.navigation > div {
+    flex: 1;
+    padding-top: 24px;
+    border-radius: 0;
+}

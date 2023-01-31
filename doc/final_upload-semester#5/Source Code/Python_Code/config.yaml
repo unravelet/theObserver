@@ -1,0 +1,3 @@
+mqtt_broker: opendata.technikum-wien.at
+mqtt_port: 8883
+mqtt_topic: theObserver

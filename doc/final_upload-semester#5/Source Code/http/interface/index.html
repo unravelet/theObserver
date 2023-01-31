@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>theObserver</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/style.css" />
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="tabs">
+            <div class="home" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <img src="http://127.0.0.1:5000/video_feed" />
+            </div>
+            <div class="statistics" id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
+            </div>
+            <div class="settings" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                <p>Version 0.1</p>
+                <p>Copyright FH Technikum Wien</p>
+                <p>All rights reserved</p>
+            </div>
+        </div>
+
+        <div class="navigation" role="tablist">
+            <div class="btn btn-primary" id="home-tab" data-bs-toggle="pill" data-bs-target="#home" role="tab" aria-controls="home" aria-selected="true">Home</div>
+            <div class="btn btn-light" id="statistics-tab" data-bs-toggle="pill" data-bs-target="#statistics" role="tab" aria-controls="home" aria-selected="false">Statistics</div>
+            <div class="btn btn-light" id="settings-tab" data-bs-toggle="pill" data-bs-target="#settings" role="tab" aria-controls="home" aria-selected="false">Settings</div>
+        </div>
+    </body>
+</html>

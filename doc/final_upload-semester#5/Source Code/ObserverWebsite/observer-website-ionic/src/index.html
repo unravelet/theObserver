@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>The Observer</title>
+
+  <base href="/" />
+
+  <meta name="color-scheme" content="light" />
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+ 
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+
+
+  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+
+  <!-- add to homescreen for ios -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+</head>
+
+<body>
+  
+  
+ <!---  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+  <script>
+    var mqtt;
+    var host = "opendata.technikum-wien.at";
+    var port = 8883;
+
+    function onFailure(message) {
+        console.error("Failure message manually", message);
+    }
+
+    function onConnect() {
+        // Once a connection has been made, make a subscription and send a message.
+        console.log("onConnect");
+        mqtt.subscribe("theObserver/Counter");
+    }
+
+    function onMessageArrived(message) {
+        $("span").html(message.payloadString);
+        console.log(message);
+    }
+
+    function startClient() {
+        mqtt = new Paho.MQTT.Client(host, port, "clientId-HfjNbKks6i");
+        mqtt.onFailure = onFailure;
+        mqtt.onMessageArrived = onMessageArrived;
+        mqtt.connect({
+            timeout: 3,
+            useSSL: true,
+            
+            onSuccess: onConnect,
+            onFailure: onFailure
+        });
+        console.log("startClient");
+    }
+
+    window.onload = startClient;
+</script>
+
+--> 
+<app-root></app-root>
+</body>
+
